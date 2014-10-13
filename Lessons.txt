@@ -1,0 +1,57 @@
+
+LessonRate: Daily
+SetDay: 2/21/13
+
+//LessonRate: Weekly
+AllowableIntroDays: MON, TUE, WED,THU, FRI
+
+LessonRate: Weekly
+LessonRate:Daily
+
+Sentence/Fragment
+Declaritive and Interrogative
+Imperative and Exclamatory
+Fixing Run-together Sentences
+Friendly Letter Parts
+Encyclopedia Guide Words
+Abbreviations and End Marks
+Commas Rule 1
+Commas Rule 2
+Commas Rules 3,4,5
+Quotation Marks Rule 1
+Quotation Marks Rule 2
+Apostrophes Rule 1
+Apostrophes Rule 2
+Colons and Underlining
+Capitalization Rules 1,2,3
+Capitalization Rules 4,5
+Capitalization Rule 6
+Capitalization Rules 7,8,9
+Capitalization Rules 10,11
+Sentence Parts: Subject/Predicate
+The Verb-Action
+State of Being Verbs
+Helping Verbs
+Verb Phrases
+Recognizing Nouns
+Common and Proper Nouns
+Subjects and Verbs
+Compound Subjects and Verbs
+Making Nouns Plural
+Pronouns and Antecedents
+Adjectives
+Adverbs-Modifying Verbs
+Adverbs-Modifying Adjectives and Adverbs
+Good and Well
+Prepositions
+Prepositional Phrases
+Conjunctions
+Interjections
+Agreement of Subject and Verb
+Using Sit and Set Correctly
+Using Lie and Lay Correctly
+Using Its and It's
+Using Your and You're
+Using Their, They're, and There
+Using To, Too, and Two
+Using Learn/Teach and Can/May
