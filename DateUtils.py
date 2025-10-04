@@ -1,8 +1,8 @@
 import datetime
 
-sun, mon, tue, wed, thr, fri, sat = range(7)
-day_map = dict(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
-                    range(7)))
+sun, mon, tue, wed, thr, fri, sat = list(range(7))
+day_map = dict(list(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
+                    list(range(7)))))
 
 def calc_easter(year):
     "Returns Easter as a date object."

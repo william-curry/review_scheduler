@@ -4,16 +4,17 @@ import sys
 import Lessons
 import Unavailable
 import DateUtils as DU
+import importlib
 
-reload(Lessons)
-reload(Unavailable)
+importlib.reload(Lessons)
+importlib.reload(Unavailable)
 
 
 from datetime import date
 
-sun, mon, tue, wed, thr, fri, sat = range(7)
-day_map = dict(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
-                    range(7)))
+sun, mon, tue, wed, thr, fri, sat = list(range(7))
+day_map = dict(list(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
+                    list(range(7)))))
 
 increment_map = {'WEEKLY':7,
                  'DAILY':1}
@@ -70,6 +71,6 @@ if __name__ == '__main__':
     em = elephant_memory()
 
     em.make_schedule()
-    print "Done"
+    print("Done")
 
 

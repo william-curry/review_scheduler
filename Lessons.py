@@ -1,7 +1,8 @@
 import datetime
 import Unavailable
 import DateUtils
-reload(DateUtils)
+import importlib
+importlib.reload(DateUtils)
 
 class Lessons(object):
     """ The file reads the
@@ -24,7 +25,7 @@ class Lessons(object):
             start_day = set_days[0].split(':')[-1].strip().replace('-', '/')            
             self.start_date = DateUtils.str_to_date(start_day)                    
         else:
-            print "WARNING: no start day set, using today's date"
+            print("WARNING: no start day set, using today's date")
             self.start_date = datetime.datetime.today()
         self.end_date= self.start_date + datetime.timedelta(duration)
 
@@ -45,5 +46,5 @@ if __name__ == '__main__':
     lessons = Lessons('Lessons.txt','UnavailableDays.txt', duration)
     unavailable = Unavailable.Unavailable('UnavailableDays.txt')
 
-    print "Number of Lessons", len(lessons.lesson_lines)
+    print("Number of Lessons", len(lessons.lesson_lines))
 

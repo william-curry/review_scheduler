@@ -38,7 +38,7 @@ class Unavailable(object):
                 elif lower_line.startswith('saturday'):
                     self.weekdays.add(DU.sat)
                 else:
-                    print "WARNING: UNKNOWN line, ", line
+                    print("WARNING: UNKNOWN line, ", line)
 
 
     def is_available(self, some_date):
@@ -50,4 +50,4 @@ class Unavailable(object):
 
 if __name__ == '__main__':
     unavail = Unavailable("UnavailableDays.txt")
-    print unavail.specific_dates
+    print(unavail.specific_dates)
