@@ -1,8 +1,9 @@
 import datetime
 
 sun, mon, tue, wed, thr, fri, sat = list(range(7))
-day_map = dict(list(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
-                    list(range(7)))))
+day_map = dict(
+    zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'), range(7)))
+
 
 def calc_easter(year):
     "Returns Easter as a date object."
@@ -13,14 +14,14 @@ def calc_easter(year):
     e = (32 + 2 * (b % 4) + 2 * (c // 4) - d - (c % 4)) % 7
     f = d + e - 7 * ((a + 11 * d + 22 * e) // 451) + 114
     month = f // 31
-    day = f % 31 + 1    
+    day = f % 31 + 1
     return datetime.date(year, month, day)
 
 
 def str_to_date(date_str):
     try:
         return datetime.datetime.strptime(date_str,
-                                            "%m/%d/%Y").date()
+                                          "%m/%d/%Y").date()
     except ValueError:
         return datetime.datetime.strptime(date_str,
-                                            "%m/%d/%y").date()
+                                          "%m/%d/%y").date()

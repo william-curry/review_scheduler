@@ -1,6 +1,6 @@
-import datetime
 
 import DateUtils as DU
+
 
 class Unavailable(object):
     def __init__(self, file_name):
@@ -8,8 +8,8 @@ class Unavailable(object):
             unavail_lines = fp.read().splitlines()
 
         unavail_lines = [x.strip() for x in unavail_lines if x.strip()
-                   and not (x.strip().startswith("#") or
-                   x.strip().startswith("//"))]
+                         and not (x.strip().startswith("#") or
+                                  x.strip().startswith("//"))]
 
         self.specific_dates = set()
         self.weekdays = set()
@@ -40,13 +40,13 @@ class Unavailable(object):
                 else:
                     print("WARNING: UNKNOWN line, ", line)
 
-
     def is_available(self, some_date):
         return (some_date not in self.specific_dates and
                 some_date.weekday() not in self.weekdays)
 
-    def reviews_possible(self,load_day, end_day, target_ratio, initial_interval):
+    def reviews_possible(self, load_day, end_day, target_ratio, initial_interval):
         pass
+
 
 if __name__ == '__main__':
     unavail = Unavailable("UnavailableDays.txt")
