@@ -1,8 +1,8 @@
 import datetime
 
-sun, mon, tue, wed, thr, fri, sat = list(range(7))
+mon, tue, wed, thr, fri, sat, sun = list(range(7))
 day_map = dict(
-    zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'), range(7)))
+    zip(('mon', 'tue', 'wed', 'thr', 'fri', 'sat', 'sun'), range(7)))
 
 
 def calc_easter(year):
@@ -25,3 +25,22 @@ def str_to_date(date_str):
     except ValueError:
         return datetime.datetime.strptime(date_str,
                                           "%m/%d/%y").date()
+
+
+def get_next_weekday(off_weekday, start_day):
+    for i in range(7):
+        this_day = start_day + datetime.timedelta(days=i)
+        if this_day.weekday() == off_weekday:
+            return this_day
+    return None
+
+
+def get_all_weekdays_in_range(start_day, duration):
+    return [start_day + datetime.timedelta(days=7 * i) for i in range(duration // 7 + 1)]
+
+
+if __name__ == '__main__':
+    print(calc_easter(2025))
+    next_tuesday = get_next_weekday(tue, datetime.date.today())
+    print(next_tuesday)
+    print(get_all_weekdays_in_range(next_tuesday, 14))

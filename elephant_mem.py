@@ -2,11 +2,12 @@ import argparse
 import Lessons
 import Unavailable
 import DateUtils as DU
+import datetime
 
 
-sun, mon, tue, wed, thr, fri, sat = list(range(7))
-day_map = dict(list(zip(('sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'),
-                    list(range(7)))))
+#mon, tue, wed, thr, fri, sat, sun = list(range(7))   # maps to day.weekday()
+#day_map = dict(zip(['mon', 'tue', 'wed', 'thr', 'fri', 'sat', 'sun'],
+#                    range(7)))
 
 increment_map = {'WEEKLY': 7,
                  'DAILY': 1}
@@ -22,6 +23,9 @@ class elephant_memory(object):
         self.keyword_map = {'LessonRate': self.processLessonRate,
                             'SetDay': self.processSetDay,
                             'AllowableIntroDays': self.processAllowableIntroDays}
+        self.target_ratio = 1.7  # golden ratio is 1.618
+        self.initial_interval = 4.0  # initial review is 4 days 
+
 
     def processLessonRate(self, rate_str):
         self.day_increment = increment_map[rate_str]
@@ -47,7 +51,8 @@ class elephant_memory(object):
                 self.keyword_map[lesson_tokens[0]](lesson_tokens[1])
                 continue
 
-            # Now try to to develope add lessons from current load
+            # Now try to to develop add lessons from current load
+
 
 
 if __name__ == '__main__':

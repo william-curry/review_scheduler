@@ -1,9 +1,24 @@
 
 import DateUtils as DU
+from IPython import embed
+import datetime
+
+
+embed_cnt = 0
+
+
+def block_repeats(start_day, repeat_days, duration):
+    out = []
+    for day in repeat_days:
+        set_day = DU.get_next_weekday(day, start_day)
+        out.extend(DU.get_all_weekdays_in_range(set_day, duration))
+    return set(out)
 
 
 class Unavailable(object):
-    def __init__(self, file_name):
+    def __init__(self, file_name, start_day, duration):
+        self.start_day = start_day
+        self.duration = duration
         with open(file_name) as fp:
             unavail_lines = fp.read().splitlines()
 
@@ -11,43 +26,52 @@ class Unavailable(object):
                          and not (x.strip().startswith("#") or
                                   x.strip().startswith("//"))]
 
-        self.specific_dates = set()
-        self.weekdays = set()
+        self.blocked_days = set()
 
         for line in unavail_lines:
             try:
-                self.specific_dates |= set([DU.str_to_date(x.strip()) for
-                                            x in line.split(',')])
+                days_on_line = [DU.str_to_date(x.strip()) for x in line.split(',')]
+                self.blocked_days |= set(days_on_line)
+
+                if len(days_on_line) == 2:
+                    assert (days_on_line[0] < days_on_line[1])
+                    first_break_day = days_on_line[0]
+                    last_break_day = days_on_line[1]
+                    temp_day = first_break_day
+                    while temp_day < last_break_day:
+                        self.blocked_days.add(temp_day)
+                        temp_day += datetime.timedelta(days=1)
             except ValueError:
                 lower_line = line.strip().lower()
+                repeat_days = []
                 if lower_line.startswith('weekend'):
-                    self.weekdays.add(DU.sat)
-                    self.weekdays.add(DU.sun)
+                    repeat_days.append(DU.sat)
+                    repeat_days.append(DU.sun)
                 elif lower_line.startswith('sunday'):
-                    self.weekdays.add(DU.sun)
+                    repeat_days.append(DU.sun)
                 elif lower_line.startswith('monday'):
-                    self.weekdays.add(DU.mon)
+                    repeat_days.append(DU.mon)
                 elif lower_line.startswith('tuesday'):
-                    self.weekdays.add(DU.tue)
+                    repeat_days.append(DU.tue)
                 elif lower_line.startswith('wednesday'):
-                    self.weekdays.add(DU.wed)
+                    repeat_days.append(DU.wed)
                 elif lower_line.startswith('thursday'):
-                    self.weekdays.add(DU.thu)
+                    repeat_days.append(DU.thr)
                 elif lower_line.startswith('friday'):
-                    self.weekdays.add(DU.fri)
+                    repeat_days.append(DU.fri)
                 elif lower_line.startswith('saturday'):
-                    self.weekdays.add(DU.sat)
+                    repeat_days.append(DU.sat)
                 else:
                     print("WARNING: UNKNOWN line, ", line)
+                self.blocked_days |= block_repeats(self.start_day, repeat_days, self.duration)
 
     def is_available(self, some_date):
-        return (some_date not in self.specific_dates and
-                some_date.weekday() not in self.weekdays)
+        return (some_date not in self.specific_dates and some_date.weekday() not in self.weekdays)
 
     def reviews_possible(self, load_day, end_day, target_ratio, initial_interval):
         pass
 
 
 if __name__ == '__main__':
-    unavail = Unavailable("UnavailableDays.txt")
-    print(unavail.specific_dates)
+    unavail = Unavailable("UnavailableDays.txt", datetime.date(2025, 9, 2), 360)
+    print(sorted(unavail.blocked_days))

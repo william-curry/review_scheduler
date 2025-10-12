@@ -1,6 +1,6 @@
 
 LessonRate: Daily
-SetDay: 2/21/13
+SetDay: 9/1/2025
 
 //LessonRate: Weekly
 AllowableIntroDays: MON, TUE, WED,THU, FRI

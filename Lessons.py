@@ -1,5 +1,4 @@
 import datetime
-import Unavailable
 import DateUtils
 import importlib
 importlib.reload(DateUtils)
@@ -10,6 +9,7 @@ class Lessons(object):
     """
 
     def __init__(self, file_name, duration=365):
+        self.duration = duration
         with open(file_name) as fp:
             lesson_lines = fp.read().splitlines()
 
@@ -28,7 +28,7 @@ class Lessons(object):
             self.start_date = DateUtils.str_to_date(start_day)
         else:
             print("WARNING: no start day set, using today's date")
-            self.start_date = datetime.datetime.today()
+            self.start_date = datetime.date.today()
         self.end_date = self.start_date + datetime.timedelta(duration)
 
         # now get just the lessons.
@@ -46,6 +46,4 @@ class Lessons(object):
 
 if __name__ == '__main__':
     lessons = Lessons('Lessons.txt')
-    unavailable = Unavailable.Unavailable('UnavailableDays.txt')
-
     print("Number of Lessons", len(lessons.lesson_lines))

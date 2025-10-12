@@ -1,62 +1,21 @@
 Weekends:
 //Fridays
 //Labor Day
-9/1/2008
+9/1/2025
 
 //Half Day
-9/12/2008
+9/13/2025
 
-// Grandparent's Day, a Half Day
-9/26/2008
-
-//Fall Conferences
-10/2/2008, 10/3/2008
-
-//Czech Village?
-10/8/2008
-
-//Half Day for End of Trimester
-11/14/2008
 
 //Thanksgiving Break
-11/25/2008, 11/28/2008
+11/27/2025, 11/28/2025
 
-//Christmas Program Practice
-12/4/2008
 
-//African-American Museum?
-12/10/2008
 
 //Christmas Break
-12/23/2008, 1/2/2009
+12/23/2025, 1/2/2026
 
-//Half Day
-1/16/2009
-
-//Half Day for End of Trimester
-2/20/2009
-
-//Spring Conferences
-3/5/2009, 3/6/2009
-
-//Half Day
-3/20/2009
-
-//Spring Break
-3/23/2009, 3/27/2009
-
-//Easter Break
-4/9/2009, 4/13/2009
-
-//Spring Music Program Practice
-4/16/2009
-
-//Walk-a-thon
-5/1/2009
-
-// Hoover Memorial?
-5/6/2009
 
 //Last Day of School
-5/27/2009
+5/27/2026
 
