@@ -7,7 +7,7 @@ import datetime
 embed_cnt = 0
 
 
-def block_repeats(start_day, repeat_days, duration):
+def block_weekly_repeats(start_day, repeat_days, duration):
     out = []
     for day in repeat_days:
         set_day = DU.get_next_weekday(day, start_day)
@@ -63,13 +63,7 @@ class Unavailable(object):
                     repeat_days.append(DU.sat)
                 else:
                     print("WARNING: UNKNOWN line, ", line)
-                self.blocked_days |= block_repeats(self.start_day, repeat_days, self.duration)
-
-    def is_available(self, some_date):
-        return (some_date not in self.specific_dates and some_date.weekday() not in self.weekdays)
-
-    def reviews_possible(self, load_day, end_day, target_ratio, initial_interval):
-        pass
+                self.blocked_days |= block_weekly_repeats(self.start_day, repeat_days, self.duration)
 
 
 if __name__ == '__main__':

@@ -37,12 +37,6 @@ class Lessons(object):
                              x.lower().startswith('setday') and not
                              x.lower().startswith('allowableintrodays')]
 
-    def increment_on_success(self):
-        pass
-
-    def increment_on_failure(self):
-        pass
-
 
 if __name__ == '__main__':
     lessons = Lessons('Lessons.txt')
