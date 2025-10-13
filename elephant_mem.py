@@ -35,24 +35,46 @@ class elephant_memory(object):
         allow_str.replace(',', ' ')
         days = [x.lower()[:3] for x in allow_str.split()]
 
-    
-    def reviews_possible(self, initial_day):
+    def reviews_possible(self, initial_day, lesson_info):
         lessons = []
         set_day = initial_day
         while set_day in self.unavailable.blocked_days:
             set_day = set_day + datetime.timedelta(days=1)
             if set_day > self.lessons.end_date:
-                return False, []
+                return False, [], set_day
         # Try initial review day
         repeat_day = set_day + datetime.timedelta(days=self.initial_interval)
         # if first day doesn't work, try a day previous
-        if repeat_day in  self.unavailable.blocked_days:
-            repeat_day =  set_day + datetime.timedelta(days=self.initial_interval - 1)
+        if repeat_day in self.unavailable.blocked_days:
+            repeat_day = set_day + datetime.timedelta(days=self.initial_interval - 1)
         # if that doesn't work, return, a different inital_day might work
         if repeat_day in self.unavailable.blocked_days:
-            return False, []
+            return False, [], set_day
         # at this point the inital review worked
-        
+        lesson_cnt = 0
+        lessons.append((set_day, lesson_info, lesson_cnt))
+        lesson_cnt += 1
+        lessons.append((repeat_day, lesson_info, lesson_cnt))
+        lesson_cnt += 1
+
+        previous_day = set_day
+        current_day = repeat_day
+        prev_interval = (current_day - previous_day).days;
+
+        while current_day < self.lessons.end_date + datetime.timedelta(days=-prev_interval):
+            prev_interval = (current_day - previous_day).days
+            target_interval = int(0.5 + prev_interval * self.target_ratio)
+            next_day = current_day + datetime.timedelta(days=target_interval)
+            while next_day in self.unavailable.blocked_days:
+                next_day = next_day + datetime.timedelta(days=-1)
+                if next_day <= current_day:
+                    # There is a problem with the review, stop
+                    return False, [], set_day
+            previous_day = current_day
+            current_day = next_day
+            lessons.append((next_day, lesson_info, lesson_cnt))
+            lesson_cnt += 1
+        return True, lessons, set_day
 
 
     def make_schedule(self):
