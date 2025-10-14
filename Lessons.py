@@ -1,12 +1,8 @@
 import datetime
-import DateUtils
-import importlib
-importlib.reload(DateUtils)
+import DateUtils as DU
 
 
 class Lessons(object):
-    """ The file reads the
-    """
 
     def __init__(self, file_name, duration=365):
         self.duration = duration
@@ -25,11 +21,26 @@ class Lessons(object):
         set_days = [x for x in lesson_lines if x.lower().startswith('setday')]
         if set_days:
             start_day = set_days[0].split(':')[-1].strip().replace('-', '/')
-            self.start_date = DateUtils.str_to_date(start_day)
+            self.start_date = DU.str_to_date(start_day)
         else:
             print("WARNING: no start day set, using today's date")
             self.start_date = datetime.date.today()
+            
+        allowable_intro_day_lines = [x for x in lesson_lines if x.lower().startswith('allowableintrodays:')]
+        
+        #TODO this justs looks at the first, we can update later
+        if allowable_intro_day_lines:
+            line = allowable_intro_day_lines[0]
+            my_days = line.split(':')[-1]
+            #embed()
+            self.allowable_intro = [DU.day_map[x.strip().lower()] for x in my_days.split(',')]
+        else:
+            self.allowable_intro = [DU.mon, DU.tue, DU.wed, DU.thr, DU.fri]
+            
+            
         self.end_date = self.start_date + datetime.timedelta(duration)
+        
+        
 
         # now get just the lessons.
         self.lesson_lines = [x for x in lesson_lines

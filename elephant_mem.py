@@ -1,47 +1,28 @@
 import argparse
 import Lessons
 import Unavailable
-import DateUtils as DU
 import datetime
-
-
-increment_map = {'WEEKLY': 7,
-                 'DAILY': 1}
+import pandas as pd
 
 
 class elephant_memory(object):
     def __init__(self, args):
-        self.day_increment = 1
-        self.unavailable_file = args.unavailable
-
         self.lessons = Lessons.Lessons(args.lessons)
         self.unavailable = Unavailable.Unavailable(args.unavailable,
                                 self.lessons.start_date, self.lessons.duration)
-        self.keyword_map = {'LessonRate': self.processLessonRate,
-                            'SetDay': self.processSetDay,
-                            'AllowableIntroDays': self.processAllowableIntroDays}
+        self.out_filename = args.lessons.split('.')[0] + 'Schedule.csv'
         self.target_ratio = 1.7  # golden ratio is 1.618
         self.initial_interval = 4.0  # initial review is 4 days
+        
+        # placeholder variables
+        self.schedule = None
+        self.schedule_df = None
 
-    def processLessonRate(self, rate_str):
-        self.day_increment = increment_map[rate_str]
 
-    def processSetDay(self, day_str):
-        new_day = DU.str_to_date(day_str)
-        if new_day > self.load_day:
-            self.load_day = new_day
-
-    def processAllowableIntroDays(self, allow_str):
-        allow_str.replace(',', ' ')
-        days = [x.lower()[:3] for x in allow_str.split()]
-
-    def reviews_possible(self, initial_day, lesson_info):
+    def reviews_possible(self, set_day):
         lessons = []
-        set_day = initial_day
-        while set_day in self.unavailable.blocked_days:
-            set_day = set_day + datetime.timedelta(days=1)
-            if set_day > self.lessons.end_date:
-                return False, [], set_day
+        if set_day in self.unavailable.blocked_days:        
+            return []
         # Try initial review day
         repeat_day = set_day + datetime.timedelta(days=self.initial_interval)
         # if first day doesn't work, try a day previous
@@ -49,13 +30,11 @@ class elephant_memory(object):
             repeat_day = set_day + datetime.timedelta(days=self.initial_interval - 1)
         # if that doesn't work, return, a different inital_day might work
         if repeat_day in self.unavailable.blocked_days:
-            return False, [], set_day
+            return []
         # at this point the inital review worked
-        lesson_cnt = 0
-        lessons.append((set_day, lesson_info, lesson_cnt))
-        lesson_cnt += 1
-        lessons.append((repeat_day, lesson_info, lesson_cnt))
-        lesson_cnt += 1
+
+        lessons.append(set_day)
+        lessons.append(repeat_day)
 
         previous_day = set_day
         current_day = repeat_day
@@ -69,27 +48,46 @@ class elephant_memory(object):
                 next_day = next_day + datetime.timedelta(days=-1)
                 if next_day <= current_day:
                     # There is a problem with the review, stop
-                    return False, [], set_day
+                    return []
             previous_day = current_day
             current_day = next_day
-            lessons.append((next_day, lesson_info, lesson_cnt))
-            lesson_cnt += 1
-        return True, lessons, set_day
+            lessons.append(next_day)
+        return lessons
+    
+    
+    def get_next_intro_day(self, this_date):
+        for i in range(7):
+            next_day = this_date + datetime.timedelta(days=(i+1))
+            if next_day.weekday() in self.lessons.allowable_intro:
+                return next_day
 
 
     def make_schedule(self):
-        self.load_day = self.lessons.start_date
+        date_to_try = self.lessons.start_date
         self.schedule = []
-
         for lesson_entry in self.lessons.lesson_lines:
-
-            # process Keywords
-            lesson_tokens = lesson_entry.split(':', 1)
-            if lesson_tokens[0] in self.keyword_map:
-                self.keyword_map[lesson_tokens[0]](lesson_tokens[1])
-                continue
-
-            # Now try to to develop add lessons from current load
+            
+            lesson_dates  = self.reviews_possible(date_to_try)
+            while not lesson_dates:
+                date_to_try = self.get_next_intro_day(date_to_try)
+                if date_to_try > self.lessons.end_date:
+                    print ("Unable to schedule lesson", lesson_entry)
+                    return None   
+                if date_to_try in self.unavailable.blocked_days:
+                    continue
+                lesson_dates = self.reviews_possible(date_to_try)
+            # should have found lessons, date_to_try is good
+            
+            #build tuple to sort (date,  count, lesson_desciption)
+            for i, review_day in enumerate(lesson_dates):
+                self.schedule.append({'Date': review_day,
+                                      'ReviewCount':i,
+                                      'LessonDescription': lesson_entry})
+            # advance to next day
+            date_to_try = date_to_try = self.get_next_intro_day(date_to_try)
+        self.schedule_df = pd.DataFrame(self.schedule)
+        self.schedule_df.sort_values(by=['Date'], inplace=True)
+        self.schedule_df.to_csv(self.out_filename, index=False)
 
 
 if __name__ == '__main__':

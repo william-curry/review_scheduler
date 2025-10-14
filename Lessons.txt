@@ -3,7 +3,7 @@ LessonRate: Daily
 SetDay: 9/1/2025
 
 //LessonRate: Weekly
-AllowableIntroDays: MON, TUE, WED,THU, FRI
+AllowableIntroDays: MON, WED, FRI
 
 LessonRate: Weekly
 LessonRate:Daily

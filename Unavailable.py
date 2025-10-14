@@ -1,10 +1,6 @@
 
 import DateUtils as DU
-from IPython import embed
 import datetime
-
-
-embed_cnt = 0
 
 
 def block_weekly_repeats(start_day, repeat_days, duration):
