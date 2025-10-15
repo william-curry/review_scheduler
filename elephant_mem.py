@@ -3,6 +3,7 @@ import Lessons
 import Unavailable
 import datetime
 import pandas as pd
+import sys
 
 
 class elephant_memory(object):
@@ -91,11 +92,14 @@ if __name__ == '__main__':
     # command line example
     # $ python elephant_mem.py -l Lessons.txt -u UnavailableDays.txt
 
-    parser = argparse.ArgumentParser(description="A script used to build a learing schedule.")
+    parser = argparse.ArgumentParser(description="A script used to build a learing schedule.  e.g. $ python elephant_mem.py -l Lessons.txt -u UnavailableDays.txt")
     parser.add_argument('-l', '--lessons', help='A file of list of the lessons for review')
     parser.add_argument('-u', '--unavailable', help='A file of days where review in unavailable')
 
-    args = parser.parse_args()
+    if len(sys.argv) == 1:
+        args = parser.parse_args(['--help'])
+    else:
+        args = parser.parse_args()
 
     em = elephant_memory(args)
 
