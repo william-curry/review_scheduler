@@ -25,22 +25,19 @@ class Lessons(object):
         else:
             print("WARNING: no start day set, using today's date")
             self.start_date = datetime.date.today()
-            
+
         allowable_intro_day_lines = [x for x in lesson_lines if x.lower().startswith('allowableintrodays:')]
-        
-        #TODO this justs looks at the first, we can update later
+
+        # TODO this justs looks at the first, we can update later
         if allowable_intro_day_lines:
             line = allowable_intro_day_lines[0]
             my_days = line.split(':')[-1]
-            #embed()
+            # embed()
             self.allowable_intro = [DU.day_map[x.strip().lower()] for x in my_days.split(',')]
         else:
             self.allowable_intro = [DU.mon, DU.tue, DU.wed, DU.thr, DU.fri]
-            
-            
+
         self.end_date = self.start_date + datetime.timedelta(duration)
-        
-        
 
         # now get just the lessons.
         self.lesson_lines = [x for x in lesson_lines
