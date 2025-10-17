@@ -27,7 +27,8 @@ class elephant_memory(object):
         repeat_day = set_day + datetime.timedelta(days=self.initial_interval)
         # if first day doesn't work, try a day previous
         if repeat_day in self.unavailable.blocked_days:
-            repeat_day = set_day + datetime.timedelta(days=self.initial_interval - 1)
+            repeat_day = set_day + \
+                datetime.timedelta(days=self.initial_interval - 1)
         # if that doesn't work, return, a different inital_day might work
         if repeat_day in self.unavailable.blocked_days:
             return []
@@ -82,7 +83,7 @@ class elephant_memory(object):
                                       'ReviewCount': i,
                                       'LessonDescription': lesson_entry})
             # advance to next day
-            date_to_try = date_to_try = self.get_next_intro_day(date_to_try)
+            date_to_try = self.get_next_intro_day(date_to_try)
         self.schedule_df = pd.DataFrame(self.schedule)
         self.schedule_df.sort_values(by=['Date'], inplace=True)
         self.schedule_df.to_csv(self.out_filename, index=False)
@@ -92,9 +93,12 @@ if __name__ == '__main__':
     # command line example
     # $ python elephant_mem.py -l Lessons.txt -u UnavailableDays.txt
 
-    parser = argparse.ArgumentParser(description="A script used to build a learing schedule.  e.g. $ python elephant_mem.py -l Lessons.txt -u UnavailableDays.txt")
-    parser.add_argument('-l', '--lessons', help='A file of list of the lessons for review')
-    parser.add_argument('-u', '--unavailable', help='A file of days where review in unavailable')
+    parser = argparse.ArgumentParser(
+        description="A script used to build a learing schedule.  e.g. $ python elephant_mem.py -l Lessons.txt -u UnavailableDays.txt")
+    parser.add_argument('-l', '--lessons',
+                        help='A file of list of the lessons for review')
+    parser.add_argument('-u', '--unavailable',
+                        help='A file of days where review in unavailable')
 
     if len(sys.argv) == 1:
         args = parser.parse_args(['--help'])
