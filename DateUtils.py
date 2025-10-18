@@ -2,7 +2,7 @@ import datetime
 
 mon, tue, wed, thr, fri, sat, sun = list(range(7))
 day_map = dict(
-    zip(('mon', 'tue', 'wed', 'thr', 'fri', 'sat', 'sun'), range(7)))
+    zip(('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'), range(7)))
 
 
 def calc_easter(year):
