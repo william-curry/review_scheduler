@@ -11,7 +11,7 @@ class elephant_memory(object):
         self.lessons = Lessons.Lessons(args.lessons)
         self.unavailable = Unavailable.Unavailable(args.unavailable,
                                                    self.lessons.start_date, self.lessons.duration)
-        self.out_filename = args.lessons.split('.')[0] + 'Schedule.csv'
+        self.out_filename = args.lessons.split('.')[0] + '_Schedule.csv'
         self.target_ratio = 1.7  # golden ratio is 1.618
         self.initial_interval = 4.0  # initial review is 4 days
 
@@ -108,4 +108,4 @@ if __name__ == '__main__':
     em = elephant_memory(args)
 
     em.make_schedule()
-    print("Done")
+    print(f"Result File: {em.out_filename}")
